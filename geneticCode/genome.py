@@ -1,3 +1,5 @@
+import random
+
 __author__ = "Segev Gershon"
 __date__ = "6/1/2017"
 __version__ = "1"
@@ -19,9 +21,11 @@ class Genome:
         self.fitness = -1
 
     def __cmp__(self, other):
-        return len([1 for i in xrange(len(other.gen_sequence))
-                    if self.gen_sequence[i] == other.gen_sequence[i]]) - \
-               len(other.gen_sequence)
+        iterate_on = other
+        if other is Genome:
+            iterate_on = other.gen_sequence
+        return len([1 for i in xrange(len(iterate_on))
+                    if self.gen_sequence[i] == iterate_on[i]]) - len(iterate_on)
 
     def __add__(self, other):
         return self.fitness + other.fitness
@@ -45,6 +49,20 @@ class Genome:
         :return: new mixed genome
         """
         return Genome(cross_func(self.gen_sequence, mate.gen_sequence))
+
+    def mutate(self, mutation_rate, get_gen):
+        """
+        the function mutate an offspring
+        :param get_gen: the function which initiate gens
+        :type get_gen: function()
+        :param mutation_rate: the mutation rate in percentage
+        :type mutation_rate: int
+        :return: None
+        """
+        if random.randint(1, 100) < mutation_rate:
+            changed_index = random.randint(0, len(self.gen_sequence)) - 1
+            mutation = get_gen()
+            self.gen_sequence[changed_index] = mutation
 
 
 """

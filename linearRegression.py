@@ -106,7 +106,7 @@ class LinearGraph:
 
 
 def main():
-    y_vals = [5, 7, 9, 11, 13]
+    y_vals = [5, 3, 9, 17, 13]
     x_vals = [1, 2, 3, 4, 5]
 
     plt.scatter(x_vals, y_vals, c='red')

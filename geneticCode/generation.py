@@ -1,6 +1,6 @@
 import random
-import genome
 import utilites
+import genome
 
 __author__ = "Segev Gershon"
 __date__ = "6/1/2017"
@@ -18,11 +18,18 @@ __version__ = "1"
 
 class Generation:
 
-    def __init__(self):
+    def __init__(self, mutation_rate=10):
+        """
+        the building method of the generation
+        :param mutation_rate: a number between 0 and 100 which will represent
+        the mutation rate parentage
+        :type mutation_rate: int
+        """
         self.population = []
         self.mating_pool = []
         self.generation = 0
         self.fitness_mean = -1
+        self.mutation_rate = mutation_rate
 
     def add_to_population(self, item):
         """
@@ -41,36 +48,57 @@ class Generation:
         :type fitness_func: function(list)
         :return: None
         """
-        for gen in self.population:
-            gen.set_fitness(fitness_func(gen.gen_sequence))
+        for gen_sec in self.population:
+            gen_sec.set_fitness(fitness_func(gen_sec.gen_sequence))
 
-        self.fitness_mean = utilites.mean(self.population)
+        self.fitness_mean = utilites.mean([i.fitness for i in self.population])
 
     def set_mating_pool(self):
         """
         the function sets the mating pool
         :return: None
         """
-        for gen in self.population:
-            for i in xrange(gen.fitness):
-                self.mating_pool.append(gen)
+        for gen_sec in self.population:
+            for i in xrange(gen_sec.fitness):
+                self.mating_pool.append(gen_sec)
 
-    def create_next_generation(self, cross_func):
+    def create_next_generation(self, cross_func, get_gen):
         """
         the function creates the next generation
         :param cross_func: the crossing function
         :type cross_func: function(list, list)
+        :param get_gen: the function which initiate gens
+        :type get_gen: function()
         :return: next generation
         :rtype: Generation
         """
-        next_gen = Generation()
+        next_gen = Generation(self.mutation_rate)
         next_gen.generation = 1 + self.generation
         mating_pool_size = len(self.mating_pool)
         for i in xrange(len(self.population)):
-            parent1 = self.mating_pool[random.randint(mating_pool_size)]
-            parent2 = self.mating_pool[random.randint(mating_pool_size)]
-            next_gen.add_to_population(parent1.cross_with(parent2, cross_func))
+            parent1 = self.mating_pool[random.randint(0, mating_pool_size - 1)]
+            parent2 = self.mating_pool[random.randint(0, mating_pool_size - 1)]
+            offspring = parent1.cross_with(parent2, cross_func)
+            offspring.mutate(self.mutation_rate, get_gen)
+            next_gen.add_to_population(offspring)
         return next_gen
+
+    def act_on_generation(self, fitness_func, cross_func, get_gen):
+        """
+        the function act on generation and does all the staff
+        that need to be done
+        :param fitness_func: the function which calculate the fitness of a
+        genome
+        :type fitness_func: function(list)
+        :param cross_func: the crossing function
+        :type cross_func: function(list, list)
+        :param get_gen: the function which initiate gens
+        :type get_gen: function()
+        :return: the new generation
+        """
+        self.generation_fitness(fitness_func)
+        self.set_mating_pool()
+        return self.create_next_generation(cross_func, get_gen)
 
 
 """
