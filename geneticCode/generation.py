@@ -18,7 +18,7 @@ __version__ = "1"
 
 class Generation:
 
-    def __init__(self, mutation_rate=10):
+    def __init__(self, mutation_rate=1):
         """
         the building method of the generation
         :param mutation_rate: a number between 0 and 100 which will represent
@@ -30,6 +30,7 @@ class Generation:
         self.generation = 0
         self.fitness_mean = -1
         self.mutation_rate = mutation_rate
+        self.best_genome = genome.Genome([])
 
     def add_to_population(self, item):
         """
@@ -48,8 +49,11 @@ class Generation:
         :type fitness_func: function(list)
         :return: None
         """
+        self.best_genome = self.population[0]
         for gen_sec in self.population:
             gen_sec.set_fitness(fitness_func(gen_sec.gen_sequence))
+            if self.best_genome.fitness < gen_sec.fitness:
+                self.best_genome = gen_sec
 
         self.fitness_mean = utilites.mean([i.fitness for i in self.population])
 
@@ -59,7 +63,7 @@ class Generation:
         :return: None
         """
         for gen_sec in self.population:
-            for i in xrange(gen_sec.fitness):
+            for i in xrange(int(gen_sec.fitness * 100)):
                 self.mating_pool.append(gen_sec)
 
     def create_next_generation(self, cross_func, get_gen):

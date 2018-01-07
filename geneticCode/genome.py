@@ -59,10 +59,10 @@ class Genome:
         :type mutation_rate: int
         :return: None
         """
-        if random.randint(1, 100) < mutation_rate:
-            changed_index = random.randint(0, len(self.gen_sequence)) - 1
-            mutation = get_gen()
-            self.gen_sequence[changed_index] = mutation
+        for i in xrange(len(self.gen_sequence)):
+            if random.randint(1, 100) <= mutation_rate:
+                mutation = get_gen()
+                self.gen_sequence[i] = mutation
 
 
 """
