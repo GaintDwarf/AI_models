@@ -1,12 +1,12 @@
 import random
-from geneticCode import generation
-from geneticCode import genome
+from GeneticCode import generation
+from GeneticCode import genome
 
 __author__ = "Segev Gershon"
 __date__ = "6/1/2017"
 __version__ = "1"
 
-sample_size = 1000
+sample_size = 200
 search_for = "to be or not to be"
 mutation_rate = 1
 
@@ -31,8 +31,8 @@ def initiate_population():
 
 
 def fitness_func(gen_sequence):
-    return len([1 for i in xrange(len(search_for)) if search_for[i] ==
-               gen_sequence[i]]) / float(len(search_for))
+    return (len([1 for i in xrange(len(search_for)) if search_for[i] ==
+                 gen_sequence[i]]) / float(len(search_for))) ** 2 + 0.01
 
 
 def cross_func(gen_sequence1, gen_sequence2):
@@ -60,14 +60,16 @@ def main():
 
     print "\n\n\nfinale results:"
     print "===================================================================="
-    print "The mean of the last generation (no. {}) was : {}% \n and the " \
-          "closest sequence was ::: {} ::: with score of : {}%" \
+    print "The mean of the last generation (no. {:,}) was : {}% \n\tThe " \
+          "closest sequence was ::: {} ::: with score of : {}% \n" \
+          "[total genomes bred:{:,}]" \
           "".format(current_generation.generation,
                     int(current_generation.fitness_mean * 100),
                     "".join(current_generation.best_genome.gen_sequence),
-                    int(current_generation.best_genome.fitness * 100))
+                    int(current_generation.best_genome.fitness * 100),
+                    current_generation.generation * sample_size)
 
-    raw_input("\n\n\nclick any key to quit...")
+    raw_input("\n\n\n")
 
 
 if __name__ == '__main__':

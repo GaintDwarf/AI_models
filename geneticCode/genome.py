@@ -14,9 +14,10 @@ __version__ = "1"
 """
 
 
-class Genome:
+class Genome(object):
 
     def __init__(self, gen_sequence):
+        super(Genome, self).__init__()
         self.gen_sequence = gen_sequence
         self.fitness = -1
 

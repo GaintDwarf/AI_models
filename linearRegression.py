@@ -6,9 +6,10 @@ __date__ = "5/1/2017"
 __version__ = "1"
 
 
-class LinearGraph:
+class LinearGraph(object):
 
     def __init__(self, y_cross=0, slope=1):
+        super(LinearGraph, self).__init__()
         self.y_cross = y_cross
         self.slope = slope
 

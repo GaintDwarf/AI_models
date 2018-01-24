@@ -16,7 +16,7 @@ __version__ = "1"
 """
 
 
-class Generation:
+class Generation(object):
 
     def __init__(self, mutation_rate=1):
         """
@@ -25,6 +25,7 @@ class Generation:
         the mutation rate parentage
         :type mutation_rate: int
         """
+        super(Generation, self).__init__()
         self.population = []
         self.mating_pool = []
         self.generation = 0
