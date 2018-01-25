@@ -97,8 +97,25 @@ class Matrix(object):
             mat += len(row_format) * "-" + "\n"
         return mat
 
+    def map(self, func):
+        """
+        the function maps all the units in the matrix
+        :param func: the function to use
+        :type func: function(float)
+        """
+        self.table = [[func(self[i][j]) for j in xrange(self.cols)]
+                      for i in xrange(self.rows)]
+
     @staticmethod
     def arr_to_mat(arr):
+        """
+        the function transfer an array to a matrix
+        like [1, 2, 3] changes to a matrix as [[1], [2], [3]]
+        :param arr: the array to convert
+        :type arr: list
+        :return: new matrix Matrix
+        :rtype:Matrix
+        """
         table = [[arr[i]] for i in xrange(len(arr))]
         mat = Matrix()
         mat.set_matrix(table)
