@@ -97,6 +97,13 @@ class Matrix(object):
             mat += len(row_format) * "-" + "\n"
         return mat
 
+    @staticmethod
+    def arr_to_mat(arr):
+        table = [[arr[i]] for i in xrange(len(arr))]
+        mat = Matrix()
+        mat.set_matrix(table)
+        return mat
+
 
 def mean(vec):
     """
@@ -107,3 +114,15 @@ def mean(vec):
     :rtype: float
     """
     return sum(vec)/float(len(vec))
+
+
+if __name__ == '__main__':
+    mt1 = Matrix()
+    mt1.set_matrix([[1, 2, 3],
+                    [4, 5, 6]])
+    mt2 = Matrix.arr_to_mat([1, 2, 3])
+    mt3 = mt1 * mt2
+
+    print mt1
+    print mt2
+    print mt3
