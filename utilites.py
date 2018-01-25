@@ -7,7 +7,7 @@ import random
 
 class Matrix(object):
     """
-    matrix object which handles the matrix
+    matrix object which handles the matrices
     """
 
     def __init__(self, rows=0, cols=0):
@@ -69,6 +69,16 @@ class Matrix(object):
                 self.cols)] for i in xrange(self.rows)])
         return nmt
 
+    def __repr__(self):
+        mat = ""
+        row_format = "{:>5} |" * (self.cols + 1)
+        mat += row_format.format("", *range(0, self.cols)) + "\n"
+        mat += len(row_format) * "-" + "\n"
+        for index, row in zip(range(0, self.rows), self.table):
+            mat += row_format.format(index, *row) + "\n"
+            mat += len(row_format) * "-" + "\n"
+        return mat
+
     def init_rand(self):
         """
         the function initializes random numbers in all the matrix
@@ -86,16 +96,6 @@ class Matrix(object):
         self.table = table
         self.rows = len(table)
         self.cols = len(table[0])
-
-    def __repr__(self):
-        mat = ""
-        row_format = "{:>5} |" * (self.cols + 1)
-        mat += row_format.format("", *range(0, self.cols)) + "\n"
-        mat += len(row_format) * "-" + "\n"
-        for index, row in zip(range(0, self.rows), self.table):
-            mat += row_format.format(index, *row) + "\n"
-            mat += len(row_format) * "-" + "\n"
-        return mat
 
     def map(self, func):
         """
