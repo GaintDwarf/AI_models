@@ -3,6 +3,7 @@ __date__ = "5/1/2017"
 __version__ = "1"
 
 import random
+import math
 
 
 class Matrix(object):
@@ -69,7 +70,7 @@ class Matrix(object):
                 self.cols)] for i in xrange(self.rows)])
         return nmt
 
-    def __repr__(self):
+    def get_print(self):
         mat = ""
         row_format = "{:>5} |" * (self.cols + 1)
         mat += row_format.format("", *range(0, self.cols)) + "\n"
@@ -114,12 +115,40 @@ class Matrix(object):
         :param arr: the array to convert
         :type arr: list
         :return: new matrix Matrix
-        :rtype:Matrix
+        :rtype: Matrix
         """
         table = [[arr[i]] for i in xrange(len(arr))]
         mat = Matrix()
         mat.set_matrix(table)
         return mat
+
+    @staticmethod
+    def mat_to_arr(mat):
+        """
+        the function transfer an array to a matrix
+        like a matrix as [[1, 4], [2, 5], [3, 6]] changes to [1, 2, 3, 4, 5, 6]
+        [1, 2, 3
+         4, 5, 6]
+        :param mat: the array to convert
+        :type mat: Matrix
+        :return: new matrix Matrix
+        :rtype: list
+        """
+        return [mat[i][j] for i in xrange(mat.rows) for j in xrange(mat.cols)]
+
+    @staticmethod
+    def transpose(mat):
+        """
+        the function returns a rotated matrix of the send matrix
+        :param mat: the matrix to rotate
+        :type mat: Matrix
+        :return: rotated matrix
+        :rtype: Matrix
+        """
+        new = Matrix(mat.cols, mat.rows)
+        new.set_matrix([[mat[j][i] for j in xrange(mat.rows)] for i in
+                        xrange(mat.cols)])
+        return new
 
 
 def mean(vec):
@@ -133,13 +162,46 @@ def mean(vec):
     return sum(vec)/float(len(vec))
 
 
+def sigmoid(x):
+    """
+    the function does the sigmoid function the input
+    :param x: the number to operate on
+    :type x: float
+    :return: the sigmoid of the given number
+    :rtype: float
+    """
+    return 1 / (1 + math.exp(-x))
+
+
+def sigmoid_derivative(x):
+    """
+    the function calculates the derivative of the sent x in the sigmoid function
+    :param x: the x to calculate on
+    :type x: float
+    :return: the sigmoid derivative
+    :rtype: float
+    """
+    sig = sigmoid(x)
+    return sig * (1 - sig)
+
+
 if __name__ == '__main__':
     mt1 = Matrix()
     mt1.set_matrix([[1, 2, 3],
                     [4, 5, 6]])
     mt2 = Matrix.arr_to_mat([1, 2, 3])
     mt3 = mt1 * mt2
-
     print mt1
+    print Matrix.transpose(mt1)
     print mt2
     print mt3
+    print Matrix.mat_to_arr(mt1)
+
+    # printing in same line example
+    import time
+
+    for i in xrange(0, 101, 1):
+        print "\r>> You have finished %d%%" % i,
+        time.sleep(0.01)
+
+    print "\rDone"
