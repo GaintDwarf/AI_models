@@ -9,15 +9,23 @@ import math
 class Matrix(object):
     """
     matrix object which handles the matrices
+    :type rows: int
+    :type cols: int
+    :type table: list[int]
     """
 
-    def __init__(self, rows=0, cols=0):
+    def __init__(self, rows=0, cols=0, value=None):
         super(Matrix, self).__init__()
         self.rows = rows
         self.cols = cols
-        self.table = [[None for j in xrange(cols)] for i in xrange(rows)]
+        self.table = [[value for j in xrange(cols)] for i in xrange(rows)]
 
     def __getitem__(self, item):
+        """
+        :param item: index
+        :return: list
+        :rtype: list
+        """
         return self.table[item]
 
     def __add__(self, other):
@@ -66,7 +74,7 @@ class Matrix(object):
                         nmt[row][other_col] = summ
         else:
             # by scalar
-            nmt.set_matrix([[self.table[i][j] * other for j in xrange(
+            nmt.set_matrix([[self[i][j] * other for j in xrange(
                 self.cols)] for i in xrange(self.rows)])
         return nmt
 
@@ -148,6 +156,24 @@ class Matrix(object):
         new = Matrix(mat.cols, mat.rows)
         new.set_matrix([[mat[j][i] for j in xrange(mat.rows)] for i in
                         xrange(mat.cols)])
+        return new
+
+    @staticmethod
+    def hadamard(mat1, mat2):
+        """
+        calculates the hadamard product of two matrices
+        :param mat1: first matrix
+        :type mat1: Matrix
+        :param mat2: second matrix
+        :type mat2: Matrix
+        :return: the hadamard product
+        :rtype: Matrix
+        """
+        if (mat1.cols != mat2.cols) or (mat1.rows != mat2.rows):
+            raise Exception("Matrices must have the same dimensions")
+        new = Matrix(mat1.rows, mat1.cols)
+        new.set_matrix([[mat1[i][j] * mat2[i][j] for j in xrange(mat1.cols)]
+                        for i in xrange(mat1.rows)])
         return new
 
 
