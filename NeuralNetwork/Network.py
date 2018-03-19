@@ -6,7 +6,7 @@ class Network(object):
     """
     the neural network class
     :type wights: list[Matrix]
-    :type biases: list[float]
+    :type biases: list[Matrix]
     """
 
     def __init__(self, input_neurons, output_neurons, *args):
@@ -26,17 +26,17 @@ class Network(object):
         # only input and output
         if len(args) == 0:
             self.wights.append(Matrix(output_neurons, input_neurons + 1))
-            self.biases.append(1)
+            self.biases.append(Matrix(output_neurons, 1))
         else:
             prev = input_neurons
             # setup all the hidden layer
             for hidden in args:
                 self.wights.append(Matrix(hidden, prev))
-                self.biases.append(1)
+                self.biases.append(Matrix(hidden, 1))
                 prev = hidden
             # set up the last layer wights
             self.wights.append(Matrix(output_neurons, prev))
-            self.biases.append(1)
+            self.biases.append(Matrix(output_neurons, 1))
 
     def initiate_wights(self):
         """
@@ -44,7 +44,7 @@ class Network(object):
         """
         for i in xrange(len(self.wights)):
             self.wights[i].init_rand()
-            self.biases[i] = random.random()
+            self.biases[i].init_rand()
 
     def feed_network(self, inputs):
         """
@@ -145,7 +145,7 @@ class Network(object):
             z.map(sigmoid_derivative)
             delta = Matrix.transpose(self.wights[-l+1]) * delta
             delta = Matrix.hadamard(delta, z)
-            delta_biases[-l] = sum(delta.table)
+            delta_biases[-l] = delta
             delta_wights[-l] = delta * Matrix.transpose(activations[-1-1])
 
         # return the delta
