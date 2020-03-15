@@ -1,4 +1,4 @@
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import utilites
 
 __author__ = "Segev Gershon"
@@ -50,8 +50,8 @@ class LinearGraph(object):
         else:
             x_mean = utilites.mean(x_values)
             y_mean = utilites.mean(y_values)
-            numerator = sum([((x_values[i] - x_mean)*(y_values[i] - y_mean))for i in
-                            xrange(len(x_values))])
+            numerator = sum([((x_values[i] - x_mean)*(y_values[i] - y_mean))
+                             for i in xrange(len(x_values))])
             denominator = sum([((val - x_mean)**2) for val in x_values])
             if denominator == 0:
                 print "the slope can't be calculated"
@@ -110,7 +110,7 @@ def main():
     y_vals = [5, 3, 9, 17, 13]
     x_vals = [1, 2, 3, 4, 5]
 
-    plt.scatter(x_vals, y_vals, c='red')
+    #plt.scatter(x_vals, y_vals, c='red')
 
     graph = LinearGraph()
     graph.find_slope(x_vals, y_vals)
@@ -119,9 +119,9 @@ def main():
     graph.print_graph_function()
 
     print "the prediction for x = 100 is {}".format(graph.get_value(100))
-    graph.set_graph()
+    #graph.set_graph()
 
-    plt.show()
+    #plt.show()
 
 
 if __name__ == '__main__':
